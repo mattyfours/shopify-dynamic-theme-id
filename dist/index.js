@@ -25700,7 +25700,7 @@ async function run() {
         if (!branchThemeId) {
             throw new Error(`Envrionment variable <${branchThemeKey}> is not set`);
         }
-        core.setOutput('branchThemeId', branchThemeId);
+        core.setOutput('branchThemeId', `e ${variables}`);
     }
     catch (error) {
         if (error instanceof Error)
