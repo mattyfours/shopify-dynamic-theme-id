@@ -12,35 +12,22 @@ export async function run(): Promise<void> {
       required: true,
       trimWhitespace: true
     })
-    const token: string = core.getInput('token', {
-      required: true,
-      trimWhitespace: true
-    })
-    const store: string = core.getInput('store', {
-      required: true,
-      trimWhitespace: true
-    })
     const branch: string = core.getInput('branch', {
       required: true,
       trimWhitespace: true
     })
 
-    if (!variables || !token || !store) {
-      throw new Error('Environment is not configured')
-    }
-
     const branchVariableHandle = branchNameToThemeKey(branch)
     const branchThemeKey = `QA_THEME__${branchVariableHandle}`
 
     const variablesJSON: EnvironmentVariables = JSON.parse(variables)
-
     const branchThemeId = variablesJSON[branchThemeKey] ?? null
 
     if (!branchThemeId) {
       throw new Error(`Envrionment variable <${branchThemeKey}> is not set`)
     }
 
-    core.setOutput('branchThemeId', `e ${variables}`)
+    core.setOutput('branchThemeId', branchThemeId)
   } catch (error) {
     if (error instanceof Error) core.setFailed(error.message)
   }

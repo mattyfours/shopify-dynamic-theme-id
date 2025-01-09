@@ -25678,21 +25678,10 @@ async function run() {
             required: true,
             trimWhitespace: true
         });
-        const token = core.getInput('token', {
-            required: true,
-            trimWhitespace: true
-        });
-        const store = core.getInput('store', {
-            required: true,
-            trimWhitespace: true
-        });
         const branch = core.getInput('branch', {
             required: true,
             trimWhitespace: true
         });
-        if (!variables || !token || !store) {
-            throw new Error('Environment is not configured');
-        }
         const branchVariableHandle = (0, utils_1.branchNameToThemeKey)(branch);
         const branchThemeKey = `QA_THEME__${branchVariableHandle}`;
         const variablesJSON = JSON.parse(variables);
@@ -25700,7 +25689,7 @@ async function run() {
         if (!branchThemeId) {
             throw new Error(`Envrionment variable <${branchThemeKey}> is not set`);
         }
-        core.setOutput('branchThemeId', `e ${variables}`);
+        core.setOutput('branchThemeId', branchThemeId);
     }
     catch (error) {
         if (error instanceof Error)
