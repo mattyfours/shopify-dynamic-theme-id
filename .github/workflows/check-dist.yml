@@ -16,7 +16,7 @@ on:
   push:
     branches: [main, feature/*, hotfix/*, develop/*]
 
-  run-name: Check Dist
+run-name: Check Dist
 
 permissions:
   contents: read
