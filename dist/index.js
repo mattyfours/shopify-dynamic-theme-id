@@ -25667,25 +25667,31 @@ var __importStar = (this && this.__importStar) || (function () {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.run = run;
 const core = __importStar(__nccwpck_require__(7484));
-const wait_1 = __nccwpck_require__(910);
+const utils_1 = __nccwpck_require__(1798);
 /**
  * The main function for the action.
  * @returns {Promise<void>} Resolves when the action is complete.
  */
 async function run() {
     try {
-        const ms = core.getInput('milliseconds');
-        // Debug logs are only output if the `ACTIONS_STEP_DEBUG` secret is true
-        core.debug(`Waiting ${ms} milliseconds ...`);
-        // Log the current timestamp, wait, then log the new timestamp
-        core.debug(new Date().toTimeString());
-        await (0, wait_1.wait)(parseInt(ms, 10));
-        core.debug(new Date().toTimeString());
-        // Set outputs for other workflow steps to use
-        core.setOutput('time', new Date().toTimeString());
+        const variables = core.getInput('variables');
+        const token = core.getInput('token');
+        const store = core.getInput('store');
+        const branch = core.getInput('branch');
+        if (!variables || !token || !store) {
+            throw new Error('Environment is not configured');
+        }
+        const branchVariableHandle = (0, utils_1.branchNameToThemeKey)(branch);
+        const branchThemeKey = `QA_THEME__${branchVariableHandle}`;
+        const variablesJSON = JSON.parse(variables);
+        const branchThemeId = variablesJSON[branchThemeKey] ?? null;
+        if (!branchThemeId) {
+            throw new Error(`Envrionment variable <${branchThemeKey}> is not set`);
+        }
+        core.debug(`BranchId: ${branchThemeId}`);
+        core.setOutput('branchThemeId', branchThemeId);
     }
     catch (error) {
-        // Fail the workflow run if an error occurs
         if (error instanceof Error)
             core.setFailed(error.message);
     }
@@ -25694,26 +25700,17 @@ async function run() {
 
 /***/ }),
 
-/***/ 910:
+/***/ 1798:
 /***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.wait = wait;
-/**
- * Wait for a number of milliseconds.
- * @param milliseconds The number of milliseconds to wait.
- * @returns {Promise<string>} Resolves with 'done!' after the wait is over.
- */
-async function wait(milliseconds) {
-    return new Promise(resolve => {
-        if (isNaN(milliseconds)) {
-            throw new Error('milliseconds not a number');
-        }
-        setTimeout(() => resolve('done!'), milliseconds);
-    });
-}
+exports.branchNameToThemeKey = void 0;
+const branchNameToThemeKey = (branchName) => {
+    return branchName.replace(/[\/.\-\s]/g, '_').toUpperCase();
+};
+exports.branchNameToThemeKey = branchNameToThemeKey;
 
 
 /***/ }),
@@ -27621,23 +27618,13 @@ module.exports = parseParams
 /******/ 	if (typeof __nccwpck_require__ !== 'undefined') __nccwpck_require__.ab = __dirname + "/";
 /******/ 	
 /************************************************************************/
-var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be in strict mode.
-(() => {
-"use strict";
-var exports = __webpack_exports__;
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-/**
- * The entrypoint for the action.
- */
-const main_1 = __nccwpck_require__(1730);
-// eslint-disable-next-line @typescript-eslint/no-floating-promises
-(0, main_1.run)();
-
-})();
-
-module.exports = __webpack_exports__;
+/******/ 	
+/******/ 	// startup
+/******/ 	// Load entry module and return exports
+/******/ 	// This entry module is referenced by other modules so it can't be inlined
+/******/ 	var __webpack_exports__ = __nccwpck_require__(1730);
+/******/ 	module.exports = __webpack_exports__;
+/******/ 	
 /******/ })()
 ;
 //# sourceMappingURL=index.js.map

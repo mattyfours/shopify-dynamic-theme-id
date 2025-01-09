@@ -1,5 +1,6 @@
 import * as core from '@actions/core'
-import { wait } from './wait'
+import { branchNameToThemeKey } from './utils'
+import { EnvironmentVariables } from './types'
 
 /**
  * The main function for the action.
@@ -7,20 +8,29 @@ import { wait } from './wait'
  */
 export async function run(): Promise<void> {
   try {
-    const ms: string = core.getInput('milliseconds')
+    const variables: string = core.getInput('variables')
+    const token: string = core.getInput('token')
+    const store: string = core.getInput('store')
+    const branch: string = core.getInput('branch')
 
-    // Debug logs are only output if the `ACTIONS_STEP_DEBUG` secret is true
-    core.debug(`Waiting ${ms} milliseconds ...`)
+    if (!variables || !token || !store) {
+      throw new Error('Environment is not configured')
+    }
 
-    // Log the current timestamp, wait, then log the new timestamp
-    core.debug(new Date().toTimeString())
-    await wait(parseInt(ms, 10))
-    core.debug(new Date().toTimeString())
+    const branchVariableHandle = branchNameToThemeKey(branch)
+    const branchThemeKey = `QA_THEME__${branchVariableHandle}`
 
-    // Set outputs for other workflow steps to use
-    core.setOutput('time', new Date().toTimeString())
+    const variablesJSON: EnvironmentVariables = JSON.parse(variables)
+
+    const branchThemeId = variablesJSON[branchThemeKey] ?? null
+
+    if (!branchThemeId) {
+      throw new Error(`Envrionment variable <${branchThemeKey}> is not set`)
+    }
+
+    core.debug(`BranchId: ${branchThemeId}`)
+    core.setOutput('branchThemeId', branchThemeId)
   } catch (error) {
-    // Fail the workflow run if an error occurs
     if (error instanceof Error) core.setFailed(error.message)
   }
 }

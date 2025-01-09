@@ -1,23 +1,28 @@
-name: 'The name of your action here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'Shopify Dynamic Theme Id'
+description: 'Get the theme ID of a Shopify store based on the branch name'
+author: 'mattyfours'
 
-# Add your action's branding here. This will appear on the GitHub Marketplace.
-branding:
-  icon: 'heart'
-  color: 'red'
-
-# Define your inputs here.
 inputs:
-  milliseconds:
-    description: 'Your input description here'
+  variables:
+    description: 'Environment Variables String Object'
     required: true
-    default: '1000'
+    default: '{}'
 
-# Define your outputs here.
+  token:
+    description: 'Shopify Token'
+    required: true
+
+  store:
+    description: 'Shopify Store'
+    required: true
+
+  branch:
+    description: 'Branch Name'
+    required: true
+
 outputs:
-  time:
-    description: 'Your output description here'
+  branchThemeId:
+    description: 'Shopify theme ID'
 
 runs:
   using: node20
