@@ -25,5 +25,5 @@ outputs:
     description: 'Shopify theme ID'
 
 runs:
-  using: node20
-  main: dist/index.js
+  using: 'node20'
+  main: 'dist/index.js'

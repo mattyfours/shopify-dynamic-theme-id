@@ -38,7 +38,7 @@ jobs:
           echo "VARIABLES_STRING=$VARS_AS_STRING" >> $GITHUB_ENV
 
       - name: Test Local Action
-        id: dynamic_theme_id
+        id: dynamic-theme-id
         uses: ./
         with:
           variables: '${{ env.VARIABLES_STRING }}'
@@ -48,4 +48,4 @@ jobs:
 
       - name: Display Output
         run: |
-          echo "Branch Theme ID: ${{ steps.dynamic_theme_id.outputs.branchThemeId }}"
+          echo "Branch Theme ID: ${{ steps.dynamic-theme-id.outputs.branchThemeId }}"
