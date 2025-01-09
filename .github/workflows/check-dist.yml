@@ -17,6 +17,8 @@ on:
     branches:
       - main
 
+  run-name: Check Dist
+
 permissions:
   contents: read
 

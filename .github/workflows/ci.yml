@@ -2,17 +2,9 @@ name: Continuous Integration
 
 on:
   pull_request:
-    branches:
-      - main
-      - feature/*
-      - hotfix/*
-      - develop/*
+    branches: [main, feature/*, hotfix/*, develop/*]
   push:
-    branches:
-      - main
-      - feature/*
-      - hotfix/*
-      - develop/*
+    branches: [main, feature/*, hotfix/*, develop/*]
 
   run-name: Testing Action
 
