@@ -42,7 +42,7 @@ jobs:
         uses: ./
         with:
           variables: '${{ env.VARIABLES_STRING }}'
-          token: '${{ env.SHOPIFY_CLI_THEME_TOKEN }}'
+          token: ''
           store: '${{ env.SHOPIFY_FLAG_STORE }}'
           branch: '${{ github.ref_name }}'
 
