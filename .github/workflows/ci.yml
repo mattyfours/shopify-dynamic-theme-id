@@ -4,49 +4,31 @@ on:
   pull_request:
     branches:
       - main
+      - feature/*
+      - hotfix/*
+      - develop/*
   push:
     branches:
       - main
+      - feature/*
+      - hotfix/*
+      - develop/*
 
-permissions:
-  contents: read
+  run-name: Testing Action
 
 jobs:
-  test-typescript:
-    name: TypeScript Tests
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        id: checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        id: setup-node
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: .node-version
-          cache: npm
-
-      - name: Install Dependencies
-        id: npm-ci
-        run: npm ci
-
-      - name: Check Format
-        id: npm-format-check
-        run: npm run format:check
-
-      - name: Lint
-        id: npm-lint
-        run: npm run lint
-
-      - name: Test
-        id: npm-ci-test
-        run: npm run ci-test
-
   test-action:
     name: GitHub Actions Test
     runs-on: ubuntu-latest
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        environment: [Action Test]
+    environment: ${{ matrix.environment }}
+    env:
+      SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOPIFY_CLI_THEME_TOKEN }}
+      SHOPIFY_FLAG_STORE: "${{ vars.SHOPIFY_FLAG_STORE }}"
 
     steps:
       - name: Checkout
@@ -57,8 +39,8 @@ jobs:
         id: test-action
         uses: ./
         with:
-          milliseconds: 2000
+          variables: "${{ toJson(vars) }}"
+          token: "${{ env.SHOPIFY_CLI_THEME_TOKEN }}"
+          store: "${{ env.SHOPIFY_FLAG_STORE }}"
+          branch: "${{ github.ref_name }}"
 
-      - name: Print Output
-        id: output
-        run: echo "${{ steps.test-action.outputs.time }}"
