@@ -28,11 +28,15 @@ jobs:
         id: checkout
         uses: actions/checkout@v4
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
       - name: Test Local Action
         id: dynamic_theme_id
         uses: ./
         with:
-          variables: '${{ toJson(vars) }}'
+          variables: '${{ vars }}'
           token: '${{ env.SHOPIFY_CLI_THEME_TOKEN }}'
           store: '${{ env.SHOPIFY_FLAG_STORE }}'
           branch: '${{ github.ref_name }}'
