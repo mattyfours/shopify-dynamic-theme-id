@@ -25674,10 +25674,22 @@ const utils_1 = __nccwpck_require__(1798);
  */
 async function run() {
     try {
-        const variables = core.getInput('variables');
-        const token = core.getInput('token');
-        const store = core.getInput('store');
-        const branch = core.getInput('branch');
+        const variables = core.getInput('variables', {
+            required: true,
+            trimWhitespace: true
+        });
+        const token = core.getInput('token', {
+            required: true,
+            trimWhitespace: true
+        });
+        const store = core.getInput('store', {
+            required: true,
+            trimWhitespace: true
+        });
+        const branch = core.getInput('branch', {
+            required: true,
+            trimWhitespace: true
+        });
         if (!variables || !token || !store) {
             throw new Error('Environment is not configured');
         }
@@ -25688,7 +25700,6 @@ async function run() {
         if (!branchThemeId) {
             throw new Error(`Envrionment variable <${branchThemeKey}> is not set`);
         }
-        core.debug(`BranchId: ${branchThemeId}`);
         core.setOutput('branchThemeId', branchThemeId);
     }
     catch (error) {

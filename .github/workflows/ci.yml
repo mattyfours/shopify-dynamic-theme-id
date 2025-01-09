@@ -1,6 +1,7 @@
 name: Continuous Integration
 
 on:
+  workflow_dispatch:
   pull_request:
     branches: [main, feature/*, hotfix/*, develop/*]
   push:
@@ -13,14 +14,10 @@ jobs:
     name: GitHub Actions Test
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        environment: [Action Test]
-    environment: ${{ matrix.environment }}
+    environment: 'Action Test'
     env:
       SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOPIFY_CLI_THEME_TOKEN }}
-      SHOPIFY_FLAG_STORE: "${{ vars.SHOPIFY_FLAG_STORE }}"
+      SHOPIFY_FLAG_STORE: '${{ vars.SHOPIFY_FLAG_STORE }}'
 
     steps:
       - name: Checkout
@@ -31,8 +28,7 @@ jobs:
         id: test-action
         uses: ./
         with:
-          variables: "${{ toJson(vars) }}"
-          token: "${{ env.SHOPIFY_CLI_THEME_TOKEN }}"
-          store: "${{ env.SHOPIFY_FLAG_STORE }}"
-          branch: "${{ github.ref_name }}"
-
+          variables: '${{ toJson(vars) }}'
+          token: '${{ env.SHOPIFY_CLI_THEME_TOKEN }}'
+          store: '${{ env.SHOPIFY_FLAG_STORE }}'
+          branch: '${{ github.ref_name }}'

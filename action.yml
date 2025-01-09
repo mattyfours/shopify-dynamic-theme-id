@@ -11,7 +11,7 @@ inputs:
   token:
     description: 'Shopify Token'
     required: true
-S
+
   store:
     description: 'Shopify Store'
     required: true
