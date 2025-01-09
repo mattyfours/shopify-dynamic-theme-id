@@ -34,8 +34,8 @@ jobs:
 
       - name: Configure Environment Variables
         run: |
-          string_variables=$(echo '${{ toJson(vars) }}' | jq -c .)
-          echo "VARIABLES_STRING=$string_variables" >> $GITHUB_ENV
+          VARS_AS_STRING=$(echo '${{ toJson(vars) }}' | jq -c .)
+          echo "VARIABLES_STRING=$VARS_AS_STRING" >> $GITHUB_ENV
 
       - name: Test Local Action
         id: dynamic_theme_id
@@ -49,4 +49,4 @@ jobs:
       - name: Display Output
         id: test-action
         run: |
-          echo "Branch Theme ID: ${{ steps.dynamic_theme_id.outputs.branchThemeId }}"
+          echo "Branch Theme ID: ${ steps.dynamic_theme_id.outputs.branchThemeId }"
