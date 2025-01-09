@@ -47,6 +47,5 @@ jobs:
           branch: '${{ github.ref_name }}'
 
       - name: Display Output
-        id: test-action
         run: |
-          echo "Branch Theme ID: ${ steps.dynamic_theme_id.outputs.branchThemeId }"
+          echo "Branch Theme ID: ${{ steps.dynamic_theme_id.outputs.branchThemeId }}"
