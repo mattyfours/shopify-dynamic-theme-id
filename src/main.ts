@@ -40,7 +40,7 @@ export async function run(): Promise<void> {
       throw new Error(`Envrionment variable <${branchThemeKey}> is not set`)
     }
 
-    core.setOutput('branchThemeId', branchThemeId)
+    core.setOutput('branchThemeId', variables)
   } catch (error) {
     if (error instanceof Error) core.setFailed(error.message)
   }
