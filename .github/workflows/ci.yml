@@ -9,11 +9,15 @@ on:
 
 run-name: Testing Action
 
+permissions:
+  contents: read
+
 jobs:
   test-action:
     name: GitHub Actions Test
     runs-on: ubuntu-latest
     timeout-minutes: 10
+
     environment: 'Action Test'
     env:
       SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOPIFY_CLI_THEME_TOKEN }}
