@@ -25,10 +25,15 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Test Local Action
-        id: test-action
+        id: dynamic_theme_id
         uses: ./
         with:
           variables: '${{ toJson(vars) }}'
           token: '${{ env.SHOPIFY_CLI_THEME_TOKEN }}'
           store: '${{ env.SHOPIFY_FLAG_STORE }}'
           branch: '${{ github.ref_name }}'
+
+      - name: Display Output
+        id: test-action
+        run: |
+          echo "Branch Theme ID: ${{ steps.dynamic_theme_id.outputs.branchThemeId }}"
