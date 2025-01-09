@@ -32,11 +32,16 @@ jobs:
         with:
           node-version: 18
 
+      - name: Configure Environment Variables
+        run: |
+          string_variables=$(echo '${{ toJson(vars) }}' | jq -c .)
+          echo "VARIABLES_STRING=$string_variables" >> $GITHUB_ENV
+
       - name: Test Local Action
         id: dynamic_theme_id
         uses: ./
         with:
-          variables: '${{ vars }}'
+          variables: '${{ env.VARIABLES_STRING }}'
           token: '${{ env.SHOPIFY_CLI_THEME_TOKEN }}'
           store: '${{ env.SHOPIFY_FLAG_STORE }}'
           branch: '${{ github.ref_name }}'
